@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--Nome do modulo principal da aplicação-->
+<html ng-app="listaTelefonica">
+<head>
+	<title>Lista telêfonica</title>
+	<meta charset="UTF-8">
+	
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+	<script src="lib/angular/angular.js">
+	</script>
+	<script>
+		//criando um modulo
+		angular.module("listaTelefonica", []);
+		
+		//localizar um modulo 
+		angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($scope){
+
+			$scope.app = "Lista Telêfonica";
+			$scope.contatos = [
+				{nome:"Pedro", telefone:"2222-1212"},
+				{nome:"Ana", telefone:"3333-1212"},
+				{nome: "José", telefone:"4444-1212"}
+			];
+
+			$scope.operadoras = [
+				{nome:"Oi", codigo:001, categoria:"celular"},
+				{nome:"Vivo", codigo:002, categoria:"celular"},
+				{nome:"Tim", codigo:003, categoria:"celular"},
+				{nome:"GVT", codigo:004, categoria:"fixo"},
+				{nome:"Embratel", codigo:005, categoria:"fixo"},
+			];
+			$scope.adicionarContato = function(contato){
+
+				$scope.contatos.push(angular.copy(contato));
+				delete $scope.contato;
+
+			};
+
+		});
+	</script>
+</head>
+<body ng-controller="listaTelefonicaCtrl">
+	<!-- Definição de view é um conjunto, ex: Div-->
+
+	<div class="jumbotron">
+
+		<!-- Linha de expressão ng-bind - substitui a interpolação.-->
+		<h4 ng-bind="app"></h4>
+
+		<h3>{{app}}</h3>
+
+		<table table table-striped>
+			<tr>
+				<th>Nome</th>
+				<th>Telefone</th>
+				<th>Operadora</th>
+			</tr>
+			<tr ng-repeat="contato in contatos">
+				<td>{{contato.nome}}</td>
+				<td>{{contato.telefone}}</td>
+				<td>{{contato.operadora.nome}}</td>
+			</tr>
+		</table>
+
+		<hr>
+
+
+
+		<input class="form-controll" type="text" ng-model="contato.nome" placeholder="Nome"/>
+		<input class="form-controll" type="text" ng-model="contato.telefone" placeholder="Telefone"/>
+		<select ng-model="contato.operadora" ng-options="operadora.nome group by operadora.categoria for operadora in operadoras">
+			<option value="">Selecione uma operadora</option>
+		</select>
+		<button class="btn btn-primary" ng-click="adicionarContato(contato)" ng-disabled="!contato.nome || !contato.telefone">Adicionar contato</button>
+
+	</div>
+</body>
+</html>
